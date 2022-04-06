@@ -1,3 +1,4 @@
 import CustomHeader from './CustomHeader';
+import HorizontalFoodCard from './HorizontalFoodCard';
 
-export {CustomHeader};
+export {CustomHeader, HorizontalFoodCard};

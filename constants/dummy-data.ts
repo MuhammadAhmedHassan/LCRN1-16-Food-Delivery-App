@@ -1,6 +1,6 @@
+import {ImageSourcePropType} from 'react-native';
 import icons from './icons';
 import images from './images';
-
 
 const myProfile = {
   name: 'ByProgrammers',
@@ -33,7 +33,7 @@ const hamburger = {
   categories: [1, 2],
   price: 15.99,
   calories: 78,
-  isFavourite: true,
+  isFavorite: true,
   image: require('../assets/images/hamburger.png'),
 };
 
@@ -103,6 +103,16 @@ const menu = [
   },
 ];
 
+export type MenuListType = {
+  id: number;
+  name: string;
+  description: string;
+  categories: number[];
+  price: number;
+  calories: number;
+  isFavorite: boolean;
+  image: any;
+};
 export default {
   myProfile,
   categories,
