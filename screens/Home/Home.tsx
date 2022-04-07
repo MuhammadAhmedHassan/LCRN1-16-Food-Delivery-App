@@ -12,7 +12,11 @@ import {
 import React, {FC, PropsWithChildren, useState} from 'react';
 import {COLORS, dummyData, FONTS, icons, SIZES} from '../../constants';
 import {MenuListType} from '../../constants/dummy-data';
-import {HorizontalFoodCard, VerticalFoodCard} from '../../components';
+import {
+  FilterModal,
+  HorizontalFoodCard,
+  VerticalFoodCard,
+} from '../../components';
 
 interface IProps {
   title: string;
@@ -79,6 +83,7 @@ const Home = () => {
     getRecommendedMenu(selectedCategoryId),
   );
   const [popular, setPopular] = useState(getPopularMenu(selectedCategoryId));
+  const [showFilterModal, setShowFilterModal] = useState(false);
 
   const handleChangeCategory = (categoryId: number, menuTypeId: number) => {
     // Find the menu based on the menu type id
@@ -127,9 +132,7 @@ const Home = () => {
         />
 
         {/* Filter Button */}
-        <TouchableOpacity
-        // onPress={}
-        >
+        <TouchableOpacity onPress={() => setShowFilterModal(true)}>
           <Image
             source={icons.filter}
             resizeMode="contain"
@@ -345,6 +348,12 @@ const Home = () => {
       }}>
       {/* Search */}
       {renderSearch()}
+      {showFilterModal && (
+        <FilterModal
+          isVisible={showFilterModal}
+          onClose={() => setShowFilterModal(false)}
+        />
+      )}
 
       {/* List */}
       <FlatList
