@@ -11,6 +11,7 @@ import {
   ImageStyle,
   TouchableOpacity,
   ScrollView,
+  Platform,
 } from 'react-native';
 import React, {FC, PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {COLORS, constants, FONTS, icons, SIZES} from '../constants';
@@ -27,6 +28,8 @@ interface IProps {
 
 const FilterModal: FC<IProps> = ({isVisible, onClose}) => {
   if (!isVisible) return null;
+  const isIOS = Platform.OS === 'ios';
+
   const modalAnimatedValue = useRef(new Animated.Value(0)).current;
 
   const [showFilterModal, setShowFilterModal] = useState<boolean>(isVisible);
@@ -90,7 +93,7 @@ const FilterModal: FC<IProps> = ({isVisible, onClose}) => {
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
-              paddingBottom: 250,
+              paddingBottom: isIOS ? 250 : 200,
             }}>
             {/* Distance section */}
             <DistanceSection />
@@ -103,7 +106,32 @@ const FilterModal: FC<IProps> = ({isVisible, onClose}) => {
 
             {/* Ratings */}
             <RatingsSection />
+
+            {/* Tags */}
+            <TagsSection />
           </ScrollView>
+
+          <View
+            style={{
+              position: 'absolute',
+              bottom: isIOS ? 150 : 70,
+              left: 0,
+              right: 0,
+              height: 110,
+              paddingHorizontal: SIZES.padding,
+              paddingVertical: SIZES.radius,
+              backgroundColor: COLORS.white,
+            }}>
+            <TextButton
+              label="Apply Filters"
+              buttonContainerStyle={{
+                height: 50,
+                borderRadius: SIZES.base,
+                backgroundColor: COLORS.primary,
+              }}
+              onPress={() => console.log('apply filter')}
+            />
+          </View>
         </Animated.View>
       </View>
     </Modal>
@@ -274,6 +302,42 @@ const RatingsSection = (props: IRatingsSection) => {
               icon={icons.star}
               iconStyle={{tintColor: isSelected ? COLORS.white : COLORS.gray}}
               onPress={() => setRatings(rating.id)}
+            />
+          );
+        })}
+      </View>
+    </Section>
+  );
+};
+
+interface ITagsSection {}
+
+const TagsSection = (props: ITagsSection) => {
+  const [selectedTag, setSelectedTag] = useState(-1);
+  return (
+    <Section title="Tags">
+      <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+        {constants.tags.map(tag => {
+          const isSelected = tag.id === selectedTag;
+          return (
+            <TextButton
+              key={`tag-${tag.id}`}
+              label={tag.label}
+              labelStyle={{
+                color: isSelected ? COLORS.white : COLORS.gray,
+                ...FONTS.body3,
+              }}
+              buttonContainerStyle={{
+                height: 50,
+                margin: 5,
+                paddingHorizontal: SIZES.padding,
+                alignItems: 'center',
+                borderRadius: SIZES.base,
+                backgroundColor: isSelected
+                  ? COLORS.primary
+                  : COLORS.lightGray2,
+              }}
+              onPress={() => setSelectedTag(tag.id)}
             />
           );
         })}

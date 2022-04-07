@@ -7,11 +7,9 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ViewStyle,
 } from 'react-native';
 import React, {FC, PropsWithChildren, useState} from 'react';
 import {COLORS, dummyData, FONTS, icons, SIZES} from '../../constants';
-import {MenuListType} from '../../constants/dummy-data';
 import {
   FilterModal,
   HorizontalFoodCard,

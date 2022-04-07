@@ -10,7 +10,7 @@ import {COLORS, FONTS} from '../constants';
 
 interface IProps {
   label: string;
-  labelStyle: TextStyle;
+  labelStyle?: TextStyle;
   buttonContainerStyle: ViewStyle;
   onPress(): void;
 }
