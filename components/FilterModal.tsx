@@ -13,9 +13,11 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {FC, PropsWithChildren, useEffect, useRef, useState} from 'react';
-import {COLORS, FONTS, icons, SIZES} from '../constants';
+import {COLORS, constants, FONTS, icons, SIZES} from '../constants';
 import IconButton from './IconButton';
 import TwoPointsSlider from './TwoPointsSlider';
+import TextButton from './TextButton';
+import TextIconButton from './TextIconButton';
 // import Animated from 'react-native-reanimated';
 
 interface IProps {
@@ -92,6 +94,15 @@ const FilterModal: FC<IProps> = ({isVisible, onClose}) => {
             }}>
             {/* Distance section */}
             <DistanceSection />
+
+            {/* Delivery Time Section */}
+            <DeliveryTimeSection />
+
+            {/* Price range section */}
+            <PriceRangeSection />
+
+            {/* Ratings */}
+            <RatingsSection />
           </ScrollView>
         </Animated.View>
       </View>
@@ -103,15 +114,57 @@ export default FilterModal;
 
 const styles = StyleSheet.create({});
 
-type IDistanceSection = {}
+type IDeliveryTimeSection = {};
+
+const DeliveryTimeSection: FC<IDeliveryTimeSection> = () => {
+  const [deliveryTime, setDeliveryTime] = useState(-1);
+  return (
+    <Section title="Delivery Time" containerStyle={{marginTop: 40}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          marginTop: SIZES.radius,
+        }}>
+        {constants.delivery_time.map(item => {
+          const isSelected = item.id === deliveryTime;
+          return (
+            <TextButton
+              key={`delivery-time-${item.id}`}
+              label={item.label}
+              labelStyle={{
+                color: isSelected ? COLORS.white : COLORS.gray,
+                ...FONTS.body3,
+              }}
+              buttonContainerStyle={{
+                width: '30%',
+                height: 50,
+                margin: 5,
+                alignItems: 'center',
+                borderRadius: SIZES.base,
+                backgroundColor: isSelected
+                  ? COLORS.primary
+                  : COLORS.lightGray2,
+              }}
+              onPress={() => setDeliveryTime(item.id)}
+            />
+          );
+        })}
+      </View>
+    </Section>
+  );
+};
+
+type IDistanceSection = {};
 
 const DistanceSection: FC<IDistanceSection> = () => {
   return (
-    <Section title='Distance'>
-      <View style={{
-        alignItems: 'center'
-      }}>
-        <TwoPointsSlider 
+    <Section title="Distance">
+      <View
+        style={{
+          alignItems: 'center',
+        }}>
+        <TwoPointsSlider
           values={[3, 10]}
           min={1}
           max={20}
@@ -121,8 +174,8 @@ const DistanceSection: FC<IDistanceSection> = () => {
         />
       </View>
     </Section>
-  )
-}
+  );
+};
 
 type ISection = {
   containerStyle?: ViewStyle;
@@ -165,5 +218,66 @@ const Header = ({onPress}: IHeader) => {
         onPress={onPress}
       />
     </View>
+  );
+};
+
+interface IPriceRangeSection {}
+
+const PriceRangeSection: FC<IPriceRangeSection> = () => {
+  return (
+    <Section title="Pricing Range">
+      <View style={{alignItems: 'center'}}>
+        <TwoPointsSlider
+          values={[10, 50]}
+          min={1}
+          max={100}
+          prefix="$"
+          postfix=""
+          onValueChange={console.log}
+        />
+      </View>
+    </Section>
+  );
+};
+
+interface IRatingsSection {}
+
+const RatingsSection = (props: IRatingsSection) => {
+  const [ratings, setRatings] = useState(-1);
+  return (
+    <Section title="Ratings" containerStyle={{marginTop: 4}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        {constants.ratings.map(rating => {
+          const isSelected = rating.id === ratings;
+          return (
+            <TextIconButton
+              key={`rating-${rating.id}`}
+              containerStyle={{
+                flex: 1,
+                height: 50,
+                margin: 5,
+                alignItems: 'center',
+                borderRadius: SIZES.base,
+                backgroundColor: isSelected
+                  ? COLORS.primary
+                  : COLORS.lightGray2,
+              }}
+              label={rating.label}
+              labelStyle={{
+                color: isSelected ? COLORS.white : COLORS.gray,
+              }}
+              icon={icons.star}
+              iconStyle={{tintColor: isSelected ? COLORS.white : COLORS.gray}}
+              onPress={() => setRatings(rating.id)}
+            />
+          );
+        })}
+      </View>
+    </Section>
   );
 };

@@ -34,7 +34,7 @@ const TwoPointsSlider: FC<IProps> = ({
         borderRadius: 10,
         backgroundColor: COLORS.lightGray2,
       }}
-      minMarkerOverlapDistance={50}
+      minMarkerOverlapDistance={20} // how close the sliders should come
       customMarker={e => {
         return (
           <View
